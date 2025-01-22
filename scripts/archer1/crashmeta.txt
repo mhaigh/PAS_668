@@ -1,0 +1,6 @@
+ timeInterval = [ 9.99000000000000E+02 9.99000000000000E+02 ];
+ missingValue = [ -9.99000000000000E+02 ];
+ nFlds = [    1 ];
+ fldList = {
+ 'VAR    '
+ };

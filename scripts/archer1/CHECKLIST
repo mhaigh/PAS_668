@@ -1,0 +1,51 @@
+------------
+general runs
+------------
+SIZE.h: tiles and recompile
+data: run length, checkpointingX2, monitoring
+data.diagnostics: output timestep
+run_repeat.sh: budget, queue, walltime, cores and aprun, queue_time, leave_time
+prep_run.sh: link PACE?
+data.exf, data.cal, r*.sh:  start year
+
+---------------
+to use chunking
+---------------
+Chunking is disabled by default - enable it in sub_run.sh
+Set chunkTwo endTime and deltaT in data 
+niter0 for chunk 2 is automatically set to chunk 1 endTime in 
+ chunkTwo_deltaT timesteps
+Permanent checkpoints are automatically disabled for chunk 1, as 
+ code can't handle a permanent checkpoint at the end of chunk 1 
+ (niter0 has to match filename)
+Code produces dumps from chunk 2 that are offset from or interspersed with 
+ those of chunk 1 (timestep-based naming)
+
+-------------------
+to submit a restart
+-------------------
+if you are just restarting a run, comment out prep_run.sh in sub_run.sh
+you don't need to worry about niter0, just make sure pickup name is right in data file
+
+if you are editing a run, don't forget to copy 'data' over to run directory, 
+
+else if you are making a new run
+copy_case.sh
+find a checkpoint and copy over to input
+set pickupsuff in data
+if you want niter0 in new run, sub_run.sh
+
+if niter0 is not zero in new run
+change niter0 in data
+maybe change something - e.g. diagnostics, ChkptFreq (or why are you doing the run?)
+prepare_run.sh
+copy over all grid files needed by mit2nc and in the transfer, e.g.
+  cp -r ../../PAS_666/run/h*.*ta .
+  cp -r ../../PAS_666/run/D*.*ta .
+  cp -r ../../PAS_666/run/R*.*ta .
+  cp -r ../../PAS_666/run/X*.*ta .
+  cp -r ../../PAS_666/run/Y*.*ta .
+remove prepare_run.sh from sub_run.sh
+sub_run.sh
+edit the time header in rsync scripts
+
