@@ -28,35 +28,37 @@ SIMENDYEAR=$9
 # ERA5 forcing
 #
 
-if [ $REANALYSIS = ERA5 ] 
+if [ $REANALYSIS = ERA5 ] || [ $REANALYSIS = ERA ]
   then
 
+  ERA=$REANALYSIS 
   TARGETYEAR=$SIMSTARTYEAR
+
   while [ $TARGETYEAR -le $SIMENDYEAR ]
     do
     if [ $((TARGETYEAR % 4)) -eq 0 ]; then
       echo $TARGETYEAR
-      ln -fs ERA5_uwind_$FIXEDTHERMOLEAPYEAR ERA5_fixeduwind_$TARGETYEAR
-      ln -fs ERA5_vwind_$FIXEDTHERMOLEAPYEAR ERA5_fixedvwind_$TARGETYEAR
-      ln -fs ERA5_uwind_$FIXEDTHERMOLEAPYEAR ERA5_uwind2_$TARGETYEAR
-      ln -fs ERA5_vwind_$FIXEDTHERMOLEAPYEAR ERA5_vwind2_$TARGETYEAR
-      ln -fs ERA5_lwdown_$FIXEDTHERMOLEAPYEAR ERA5_fixedlwdown_$TARGETYEAR
-      ln -fs ERA5_swdown_$FIXEDTHERMOLEAPYEAR ERA5_fixedswdown_$TARGETYEAR
-      ln -fs ERA5_apressure_$FIXEDTHERMOLEAPYEAR ERA5_fixedapressure_$TARGETYEAR
-      ln -fs ERA5_precip_$FIXEDTHERMOLEAPYEAR ERA5_fixedprecip_$TARGETYEAR
-      ln -fs ERA5_aqh_$FIXEDTHERMOLEAPYEAR ERA5_fixedaqh_$TARGETYEAR
-      ln -fs ERA5_atemp_$FIXEDTHERMOLEAPYEAR ERA5_fixedatemp_$TARGETYEAR
+      ln -fs ${ERA}_uwind_$FIXEDTHERMOLEAPYEAR ${ERA}_fixeduwind_$TARGETYEAR
+      ln -fs ${ERA}_vwind_$FIXEDTHERMOLEAPYEAR ${ERA}_fixedvwind_$TARGETYEAR
+      ln -fs ${ERA}_uwind_$FIXEDTHERMOLEAPYEAR ${ERA}_uwind2_$TARGETYEAR
+      ln -fs ${ERA}_vwind_$FIXEDTHERMOLEAPYEAR ${ERA}_vwind2_$TARGETYEAR
+      ln -fs ${ERA}_lwdown_$FIXEDTHERMOLEAPYEAR ${ERA}_fixedlwdown_$TARGETYEAR
+      ln -fs ${ERA}_swdown_$FIXEDTHERMOLEAPYEAR ${ERA}_fixedswdown_$TARGETYEAR
+      ln -fs ${ERA}_apressure_$FIXEDTHERMOLEAPYEAR ${ERA}_fixedapressure_$TARGETYEAR
+      ln -fs ${ERA}_precip_$FIXEDTHERMOLEAPYEAR ${ERA}_fixedprecip_$TARGETYEAR
+      ln -fs ${ERA}_aqh_$FIXEDTHERMOLEAPYEAR ${ERA}_fixedaqh_$TARGETYEAR
+      ln -fs ${ERA}_atemp_$FIXEDTHERMOLEAPYEAR ${ERA}_fixedatemp_$TARGETYEAR
     else
-      ln -fs ERA5_uwind_$FIXEDTHERMOYEAR ERA5_fixeduwind_$TARGETYEAR
-      ln -fs ERA5_vwind_$FIXEDTHERMOYEAR ERA5_fixedvwind_$TARGETYEAR
-      ln -fs ERA5_uwind_$FIXEDTHERMOYEAR ERA5_uwind2_$TARGETYEAR
-      ln -fs ERA5_vwind_$FIXEDTHERMOYEAR ERA5_vwind2_$TARGETYEAR
-      ln -fs ERA5_lwdown_$FIXEDTHERMOYEAR ERA5_fixedlwdown_$TARGETYEAR
-      ln -fs ERA5_swdown_$FIXEDTHERMOYEAR ERA5_fixedswdown_$TARGETYEAR
-      ln -fs ERA5_apressure_$FIXEDTHERMOYEAR ERA5_fixedapressure_$TARGETYEAR
-      ln -fs ERA5_precip_$FIXEDTHERMOYEAR ERA5_fixedprecip_$TARGETYEAR
-      ln -fs ERA5_aqh_$FIXEDTHERMOYEAR ERA5_fixedaqh_$TARGETYEAR
-      ln -fs ERA5_atemp_$FIXEDTHERMOYEAR ERA5_fixedatemp_$TARGETYEAR 
+      ln -fs ${ERA}_uwind_$FIXEDTHERMOYEAR ${ERA}_fixeduwind_$TARGETYEAR
+      ln -fs ${ERA}_vwind_$FIXEDTHERMOYEAR ${ERA}_fixedvwind_$TARGETYEAR
+      ln -fs ${ERA}_uwind_$FIXEDTHERMOYEAR ${ERA}_uwind2_$TARGETYEAR
+      ln -fs ${ERA}_vwind_$FIXEDTHERMOYEAR ${ERA}_vwind2_$TARGETYEAR
+      ln -fs ${ERA}_lwdown_$FIXEDTHERMOYEAR ${ERA}_fixedlwdown_$TARGETYEAR
+      ln -fs ${ERA}_swdown_$FIXEDTHERMOYEAR ${ERA}_fixedswdown_$TARGETYEAR
+      ln -fs ${ERA}_apressure_$FIXEDTHERMOYEAR ${ERA}_fixedapressure_$TARGETYEAR
+      ln -fs ${ERA}_precip_$FIXEDTHERMOYEAR ${ERA}_fixedprecip_$TARGETYEAR
+      ln -fs ${ERA}_aqh_$FIXEDTHERMOYEAR ${ERA}_fixedaqh_$TARGETYEAR
+      ln -fs ${ERA}_atemp_$FIXEDTHERMOYEAR ${ERA}_fixedatemp_$TARGETYEAR 
     fi
     TARGETYEAR=$((TARGETYEAR+1))
   done

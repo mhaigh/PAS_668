@@ -62,17 +62,17 @@
  apressurestartdate2=000000,
  apressureperiod=21600.0,
 #
- atempfile    = 'ERA_fixedatemp',
- precipfile   = 'ERA_fixedprecip',
+ atempfile    = 'ERA_atemp',
+ precipfile   = 'ERA_precip',
 # snowprecipfile   = 'ERA5_precip',
  uwindfile    = 'ERA_fixeduwind',
  vwindfile    = 'ERA_fixedvwind',
  uwind2file   = 'ERA_atemp',
  vwind2file   = 'ERA_precip',
- aqhfile      = 'ERA_fixedaqh',
- lwdownfile   = 'ERA_fixedlwdown',
- swdownfile   = 'ERA_fixedswdown',
- apressurefile= 'ERA_fixedapressure',
+ aqhfile      = 'ERA_aqh',
+ lwdownfile   = 'ERA_lwdown',
+ swdownfile   = 'ERA_swdown',
+ apressurefile= 'ERA_apressure',
 # runofffile   = 'runoff_200Gt.bin',
 #
  &

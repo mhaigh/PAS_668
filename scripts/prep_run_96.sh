@@ -1,5 +1,14 @@
 #!/bin/bash
 
+##
+# DEFINE EXPERIMENT HERE.
+# Experiment options: empty for ALL (EXP=), _fixedWinds, _fixedThermo, _fixedWindsThermo
+EXP=_fixedThermo
+# YEAR1 and YEAR2 should be year-leap year pair (e.g., 1991 & 1992)
+YEAR1=1995
+YEAR2=1996
+##
+
 # Empty the run directory - but first make sure it exists!
 if [ -d "../run" ]; then
   cd ../run
@@ -15,7 +24,11 @@ ln -s ../input/* .
 # Deep copy of the master namelist (so it doesn't get overwritten in input/)
 rm -f data
 cp -f ../input/data .
-cp -f ../input/data.exf_96 data.exf
+if [ -z "${EXP}" ]; then
+  cp -f ../input/data.exf_96 data.exf
+else
+  cp -f ../input/data.exf${EXP} data.exf
+fi
 
 #aecho 'Using default monthly diagnostics. Comment out if not wanted'
 #cp -f ../input/data.diagnostics_monthly data.diagnostics
@@ -49,6 +62,7 @@ cp -f ../input/restart_c68r/pickup* .
 ln -s /work/n02/n02/shared/baspog/ERA5/* .
 ln -s /work/n02/n02/shared/baspog/ERAI_025/* .
 ../scripts/dummy_link_96.sh ERA5 1955 1978 1979 2002 1979 2021
+../scripts/dummy_link${EXP}.sh ERA 1955 1978 1979 2002 $YEAR1 $YEAR2 1979 2021
 
 pwd
 # Link executables

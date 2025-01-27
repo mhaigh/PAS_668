@@ -28,20 +28,21 @@ SIMENDYEAR=$9
 # ERA5 forcing
 #
 
-if [ $REANALYSIS = ERA5 ] 
+if [ $REANALYSIS = ERA5 ] || [ $REANALYSIS = ERA ]
   then
 
+  ERA=$REANALYSIS
   TARGETYEAR=$TARGETSTART
   SOURCEYEAR=$SOURCESTART
 
   while [ $TARGETYEAR -le $TARGETEND ]
     do 
-    ln -fs ERA5_lwdown_$SOURCEYEAR ERA5_lwdown_$TARGETYEAR
-    ln -fs ERA5_swdown_$SOURCEYEAR ERA5_swdown_$TARGETYEAR
-    ln -fs ERA5_apressure_$SOURCEYEAR ERA5_apressure_$TARGETYEAR
-    ln -fs ERA5_precip_$SOURCEYEAR ERA5_precip_$TARGETYEAR
-    ln -fs ERA5_aqh_$SOURCEYEAR ERA5_aqh_$TARGETYEAR
-    ln -fs ERA5_atemp_$SOURCEYEAR ERA5_atemp_$TARGETYEAR
+    ln -fs ${ERA}_lwdown_$SOURCEYEAR ${ERA}_lwdown_$TARGETYEAR
+    ln -fs ${ERA}_swdown_$SOURCEYEAR ${ERA}_swdown_$TARGETYEAR
+    ln -fs ${ERA}_apressure_$SOURCEYEAR ${ERA}_apressure_$TARGETYEAR
+    ln -fs ${ERA}_precip_$SOURCEYEAR ${ERA}_precip_$TARGETYEAR
+    ln -fs ${ERA}_aqh_$SOURCEYEAR ${ERA}_aqh_$TARGETYEAR
+    ln -fs ${ERA}_atemp_$SOURCEYEAR ${ERA}_atemp_$TARGETYEAR
 
     TARGETYEAR=$((TARGETYEAR+1))
     SOURCEYEAR=$((SOURCEYEAR+1))
@@ -51,15 +52,15 @@ if [ $REANALYSIS = ERA5 ]
   TARGETYEAR=$SIMSTARTYEAR
   while [ $TARGETYEAR -le $SIMENDYEAR ]
     do
-      ln -fs ERA5_uwind_$TARGETYEAR ERA5_uwind2_$TARGETYEAR
-      ln -fs ERA5_vwind_$TARGETYEAR ERA5_vwind2_$TARGETYEAR
+      ln -fs ${ERA}_uwind_$TARGETYEAR ${ERA}_uwind2_$TARGETYEAR
+      ln -fs ${ERA}_vwind_$TARGETYEAR ${ERA}_vwind2_$TARGETYEAR
     if [ $((TARGETYEAR % 4)) -eq 0 ]; then
       echo $TARGETYEAR
-      ln -fs ERA5_uwind_$FIXEDWINDLEAPYEAR ERA5_fixeduwind_$TARGETYEAR
-      ln -fs ERA5_vwind_$FIXEDWINDLEAPYEAR ERA5_fixedvwind_$TARGETYEAR
+      ln -fs ${ERA}_uwind_$FIXEDWINDLEAPYEAR ${ERA}_fixeduwind_$TARGETYEAR
+      ln -fs ${ERA}_vwind_$FIXEDWINDLEAPYEAR ${ERA}_fixedvwind_$TARGETYEAR
     else
-      ln -fs ERA5_uwind_$FIXEDWINDYEAR ERA5_fixeduwind_$TARGETYEAR
-      ln -fs ERA5_vwind_$FIXEDWINDYEAR ERA5_fixedvwind_$TARGETYEAR
+      ln -fs ${ERA}_uwind_$FIXEDWINDYEAR ${ERA}_fixeduwind_$TARGETYEAR
+      ln -fs ${ERA}_vwind_$FIXEDWINDYEAR ${ERA}_fixedvwind_$TARGETYEAR
     fi
     TARGETYEAR=$((TARGETYEAR+1))
   done
