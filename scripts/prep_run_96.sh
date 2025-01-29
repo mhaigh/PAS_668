@@ -3,7 +3,7 @@
 ##
 # DEFINE EXPERIMENT HERE.
 # Experiment options: empty for ALL (EXP=), _fixedWinds, _fixedThermo, _fixedWindsThermo
-EXP=_fixedThermo
+EXP=
 # YEAR1 and YEAR2 should be year-leap year pair (e.g., 1991 & 1992)
 YEAR1=1995
 YEAR2=1996
@@ -56,13 +56,16 @@ cp -f ../input/data.diagnostics_all data.diagnostics
 
 # Deep copy of any pickups (so they don't get overwritten in input/)
 rm -f pickup*
-cp -f ../input/restart_c68r/pickup* . 
+cp -f ../input/restart_96/pickup* . 
 
 # Link forcing files
 ln -s /work/n02/n02/shared/baspog/ERA5/* .
 ln -s /work/n02/n02/shared/baspog/ERAI_025/* .
 ../scripts/dummy_link_96.sh ERA5 1955 1978 1979 2002 1979 2021
-../scripts/dummy_link${EXP}.sh ERA 1955 1978 1979 2002 $YEAR1 $YEAR2 1979 2021
+# If THERMO, WINDS or NONE, create additional ERA_fixed* links to ERA_* links created above.
+if [ ! -z "${EXP}" ]; then
+  ../scripts/dummy_link${EXP}.sh ERA 1955 1978 1979 2002 $YEAR1 $YEAR2 1979 2021
+fi
 
 pwd
 # Link executables
