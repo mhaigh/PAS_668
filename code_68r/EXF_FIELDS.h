@@ -162,6 +162,11 @@ C
       COMMON /exfl_wspeed_r/ wspeed0, wspeed1
       _RL wspeed0  (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
       _RL wspeed1  (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      COMMON /exf_wspeed2_r/ wspeed2
+      _RL wspeed2  (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      COMMON /exfl_wspeed2_r/ wspeed20, wspeed21
+      _RL wspeed20  (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RL wspeed21  (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
 
       COMMON /exf_atm_wind_r/ uwind, vwind
       _RL uwind     (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
@@ -172,6 +177,16 @@ C
       COMMON /exfl_vwind_r/ vwind0, vwind1
       _RL vwind0    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
       _RL vwind1    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+
+      COMMON /exf_atm_wind2_r/ uwind2, vwind2
+      _RL uwind2     (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RL vwind2     (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      COMMON /exfl_uwind2_r/ uwind20, uwind21
+      _RL uwind20    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RL uwind21    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      COMMON /exfl_vwind2_r/ vwind20, vwind21
+      _RL vwind20    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RL vwind21    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
 
       COMMON /exf_netflux_r/ hflux, sflux
       _RL hflux     (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)

@@ -22,7 +22,7 @@ C     !INTERFACE:
      O   F_ia, IcePenetSW,
      O   FWsublim,
 C    MH
-     O   F_sens, F_c,
+     O   F_sens,
 C    --
      I   bi, bj, myTime, myIter, myThid )
 
@@ -90,6 +90,9 @@ C----------
       _RL F_ia        (1:sNx,1:sNy)
       _RL IcePenetSW  (1:sNx,1:sNy)
       _RL FWsublim    (1:sNx,1:sNy)
+C     MH
+      _RL F_sens      (1:sNx,1:sNy)
+C     -- 
       INTEGER bi, bj
       _RL     myTime
       INTEGER myIter, myThid
@@ -136,7 +139,7 @@ C     dFia_dTs :: derivative of surf heat flux (F_ia) w.r.t surf. temp
       _RL tempFrz    (1:sNx,1:sNy)
       _RL F_c        (1:sNx,1:sNy)
       _RL F_lwu      (1:sNx,1:sNy)
-      _RL F_sens     (1:sNx,1:sNy)
+C      _RL F_sens     (1:sNx,1:sNy)
       _RL F_lh       (1:sNx,1:sNy)
       _RL qhice      (1:sNx,1:sNy)
       _RL dqh_dTs    (1:sNx,1:sNy)
@@ -248,7 +251,6 @@ C     here in a separate array
         F_lh     (I,J) = 0. _d 0
         F_lwu    (I,J) = 0. _d 0
         F_sens   (I,J) = 0. _d 0
-        F_c      (I,J) = 0. _d 0
 C     Make a local copy of LW, surface & atmospheric temperatures
         tsurfLoc (I,J) = TSURFin(I,J)
 c       tsurfLoc (I,J) = MIN( celsius2K+MAX_TICE, TSURFin(I,J) )

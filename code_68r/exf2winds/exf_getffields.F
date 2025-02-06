@@ -145,8 +145,8 @@ C-    Zonal and meridional wind.
 
 C      PRINT *, 'CALLING EXF_SET_UV for wind 2'
 C      FLUSH(6)
-       uwind2file='ERA5_uwind2'
-       vwind2file='ERA5_vwind2'
+       uwind2file='ERA_uwind2'
+       vwind2file='ERA_vwind2'
 C      PRINT *, 'FOR FILES:', uwind2file, vwind2file
 C      FLUSH(6)
 C-    **********************************

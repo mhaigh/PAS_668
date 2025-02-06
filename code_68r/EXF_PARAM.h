@@ -96,6 +96,8 @@ C                                  h/sflux, wspeed)
       LOGICAL useStabilityFct_overIce
       LOGICAL diags_opOceWeighted
 
+      LOGICAL useKatabCorr
+
       LOGICAL useExfZenAlbedo
       INTEGER select_ZenAlbedo
       LOGICAL useExfZenIncoming
@@ -276,6 +278,11 @@ C     {fld}const      :: uniform default field value
       _RL     uwind_exfremo_slope
       CHARACTER*1 uwindmask
 
+      INTEGER uwind2startdate1
+      INTEGER uwind2startdate2
+      _RL     uwind2StartTime
+      _RL     uwind2period
+
       INTEGER vwindstartdate1
       INTEGER vwindstartdate2
       _RL     vwindStartTime
@@ -286,6 +293,11 @@ C     {fld}const      :: uniform default field value
       _RL     vwind_exfremo_slope
       CHARACTER*1 vwindmask
 
+      INTEGER vwind2startdate1
+      INTEGER vwind2startdate2
+      _RL     vwind2StartTime
+      _RL     vwind2period
+
       INTEGER wspeedstartdate1
       INTEGER wspeedstartdate2
       _RL     wspeedStartTime
@@ -295,6 +307,16 @@ C     {fld}const      :: uniform default field value
       _RL     wspeed_exfremo_intercept
       _RL     wspeed_exfremo_slope
       CHARACTER*1 wspeedmask
+
+      INTEGER wspeed2startdate1     
+      INTEGER wspeed2startdate2
+      _RL     wspeed2StartTime
+      _RL     wspeed2period
+      _RL     wspeed2RepCycle
+      _RL     wspeed2const
+      _RL     wspeed2_exfremo_intercept
+      _RL     wspeed2_exfremo_slope
+      CHARACTER*1 wspeed2mask
 
       INTEGER swfluxstartdate1
       INTEGER swfluxstartdate2
@@ -476,7 +498,10 @@ C-    File names.
       CHARACTER*(128) vstressfile
       CHARACTER*(128) uwindfile
       CHARACTER*(128) vwindfile
+      CHARACTER*(128) uwind2file
+      CHARACTER*(128) vwind2file
       CHARACTER*(128) wspeedfile
+      CHARACTER*(128) wspeed2file
       CHARACTER*(128) swfluxfile
       CHARACTER*(128) lwfluxfile
       CHARACTER*(128) swdownfile
@@ -488,6 +513,8 @@ C-    File names.
       CHARACTER*(128) climsssfile
       CHARACTER*(128) climustrfile
       CHARACTER*(128) climvstrfile
+      CHARACTER*(128) katabSclFile
+      CHARACTER*(128) katabRtFile
 
       COMMON /EXF_PARAM_L/
      &       useExfCheckRange,
@@ -497,7 +524,8 @@ C-    File names.
      &       readStressOnAgrid, readStressOnCgrid,
      &       stressIsOnCgrid, rotateStressOnAgrid,
      &       useAtmWind, useRelativeWind, noNegativeEvap,
-     &       useStabilityFct_overIce, diags_opOceWeighted
+     &       useStabilityFct_overIce, diags_opOceWeighted,
+     &       useKatabCorr   
 
       COMMON /EXF_PARAM_I/
      &       select_ZenAlbedo,  exf_debugLev,    exf_adjMonSelect,
@@ -516,7 +544,10 @@ C-    File names.
      &       vstressstartdate1, vstressstartdate2,
      &       uwindstartdate1,   uwindstartdate2,
      &       vwindstartdate1,   vwindstartdate2,
+     &       uwind2startdate1,   uwind2startdate2,
+     &       vwind2startdate1,   vwind2startdate2,
      &       wspeedstartdate1,  wspeedstartdate2,
+     &       wspeed2startdate1,  wspeed2startdate2,
      &       swfluxstartdate1,  swfluxstartdate2,
      &       lwfluxstartdate1,  lwfluxstartdate2,
      &       swdownstartdate1,  swdownstartdate2,
@@ -565,10 +596,14 @@ C-    File names.
      &       vstressperiod,     vstressStartTime,
      &       uwindconst,        uwindRepCycle,
      &       uwindperiod,       uwindStartTime,
+     &       uwind2period,      uwind2StartTime,
      &       vwindconst,        vwindRepCycle,
      &       vwindperiod,       vwindStartTime,
+     &       vwind2period,      vwind2StartTime,
      &       wspeedconst,       wspeedRepCycle,
      &       wspeedperiod,      wspeedStartTime,
+     &       wspeed2const,      wspeed2RepCycle,
+     &       wspeed2period,     wspeed2StartTime,
      &       swfluxconst,       swfluxRepCycle,
      &       swfluxperiod,      swfluxStartTime,
      &       lwfluxconst,       lwfluxRepCycle,
@@ -610,6 +645,7 @@ C-    File names.
      &       uwind_exfremo_intercept,
      &       vwind_exfremo_intercept,
      &       wspeed_exfremo_intercept,
+     &       wspeed2_exfremo_intercept,
      &       swflux_exfremo_intercept,
      &       lwflux_exfremo_intercept,
      &       swdown_exfremo_intercept,
@@ -634,6 +670,7 @@ C-    File names.
      &       uwind_exfremo_slope,
      &       vwind_exfremo_slope,
      &       wspeed_exfremo_slope,
+     &       wspeed2_exfremo_slope,
      &       swflux_exfremo_slope,
      &       lwflux_exfremo_slope,
      &       swdown_exfremo_slope,
@@ -654,12 +691,14 @@ C-    File names.
      &       snowprecipfile,snowprecipmask,
      &       runofffile,    runoffmask,
      &       runoftempfile,
+     &       katabSclFile, katabRtFile,
      &       saltflxfile,   saltflxmask,
      &       ustressfile,   ustressmask,
      &       vstressfile,   vstressmask,
      &       uwindfile,     uwindmask,
      &       vwindfile,     vwindmask,
      &       wspeedfile,    wspeedmask,
+     &       wspeed2file,    wspeed2mask, 
      &       swfluxfile,    swfluxmask,
      &       lwfluxfile,    lwfluxmask,
      &       swdownfile,    swdownmask,

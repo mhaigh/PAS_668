@@ -70,16 +70,14 @@ C     Surface flux data.
      &          exf_iceCd,          exf_iceCe,     exf_iceCh,
      &   exf_scal_BulkCdn,     climtempfreeze, useExfCheckRange,
      &      exf_iprec    ,   exf_iprec_obcs  , exf_yftype,
-     &     exf_verbose  ,   exf_debugLev    , exf_monFreq,
-     &     exf_adjMonFreq, exf_adjMonSelect,
+     &      exf_verbose  ,   exf_debugLev    , exf_monFreq,
      & useExfYearlyFields,  twoDigitYear,
      & readStressOnAgrid, rotateStressOnAgrid, readStressOnCgrid,
      & useAtmWind,          useRelativeWind  , noNegativeEvap,
      & useStabilityFct_overIce, diags_opOceWeighted,
      & select_ZenAlbedo, useExfZenIncoming,
      & hu, ht, umin, atmrho, atmcp, cen2kel, gravity_mks,
-     & cdrag_1, cdrag_2, cdrag_3, cdrag_8, cdragMax, umax,
-     & cstanton_1, cstanton_2, cdalton,
+     & cdrag_1, cdrag_2, cdrag_3, cstanton_1, cstanton_2, cdalton,
      & flamb, flami, zolmin, zref,
      & cvapor_fac, cvapor_exp, cvapor_fac_ice, cvapor_exp_ice,
      & humid_fac, gamma_blk, saltsat, sstExtrapol, psim_fac
@@ -116,6 +114,10 @@ C     Surface flux data.
      &          uwindRepCycle,     uwindperiod,     uwindStartTime,
      &          vwindfile,     vwindstartdate1,     vwindstartdate2,
      &          vwindRepCycle,     vwindperiod,     vwindStartTime,
+     &          uwind2file,     uwind2startdate1,     uwind2startdate2,
+     &          uwind2period,     uwind2StartTime,
+     &          vwind2file,     vwind2startdate1,     vwind2startdate2,
+     &          vwind2period,     vwind2StartTime,
      &         wspeedfile,    wspeedstartdate1,    wspeedstartdate2,
      &         wspeedRepCycle,    wspeedperiod,    wspeedStartTime,
      &         swfluxfile,    swfluxstartdate1,    swfluxstartdate2,
@@ -148,9 +150,9 @@ C     Surface flux data.
      & exf_inscal_ustress,  exf_inscal_vstress,
      &   exf_inscal_uwind,  exf_inscal_vwind,    exf_inscal_wspeed,
      &   exf_inscal_atemp,  exf_offset_atemp,
-     &   exf_inscal_aqh, exf_offset_aqh,    
-     &   exf_inscal_hs, exf_inscal_hl,
-     &   exf_inscal_sst,  exf_inscal_sss,
+     &   exf_inscal_aqh,    exf_offset_aqh,
+     &   exf_inscal_hs,       exf_inscal_hl,
+     &     exf_inscal_sst,  exf_inscal_sss,
      &  exf_inscal_swflux,  exf_inscal_lwflux,   exf_inscal_precip,
      &  exf_inscal_runoff,  exf_inscal_apressure, exf_inscal_snowprecip,
      &  exf_inscal_runoftemp, exf_inscal_saltflx,
@@ -303,8 +305,6 @@ c     exf_verbose        = debugMode
       exf_verbose        = .FALSE.
       exf_debugLev       = debugLevel
       exf_monFreq        = monitorFreq
-      exf_adjMonFreq     = adjMonitorFreq
-      exf_adjMonSelect   = 1
       useExfCheckRange   = .TRUE.
       select_ZenAlbedo   = 0
       useExfZenIncoming  = .FALSE.
@@ -344,15 +344,6 @@ c     humid_fac   =  atm_Rq     <- default is zero !!!
       cdrag_1        =        0.0027000 _d 0
       cdrag_2        =        0.0001420 _d 0
       cdrag_3        =        0.0000764 _d 0
-#ifdef  ALLOW_DRAG_LARGEYEAGER09
-      cdrag_8        =       -3.1480700 _d -13
-      cdragMax       =        2.34      _d -03
-      umax           =       33.        _d 0
-#else
-      cdrag_8        = UNSET_RL
-      cdragMax       = UNSET_RL
-      umax           = UNSET_RL
-#endif
       cstanton_1     =        0.0327 _d 0
       cstanton_2     =        0.0180 _d 0
       cdalton        =        0.0346 _d 0
@@ -475,12 +466,20 @@ C     Calendar data.
       uwind_exfremo_intercept = 0.0 _d 0
       uwind_exfremo_slope = 0.0 _d 0
 
+      uwind2startdate1    = 0
+      uwind2startdate2    = 0
+      uwind2period        = 0.0 _d 0
+
       vwindstartdate1    = 0
       vwindstartdate2    = 0
       vwindperiod        = 0.0 _d 0
       vwindconst         = 0.0 _d 0
       vwind_exfremo_intercept = 0.0 _d 0
       vwind_exfremo_slope = 0.0 _d 0
+
+      vwind2startdate1    = 0
+      vwind2startdate2    = 0
+      vwind2period        = 0.0 _d 0
 
       wspeedstartdate1    = 0
       wspeedstartdate2    = 0
@@ -623,7 +622,10 @@ C     Data files.
       vstressfile        = ' '
       uwindfile          = ' '
       vwindfile          = ' '
+      uwind2file         = ' '
+      vwind2file         = ' '
       wspeedfile         = ' '
+      wspeed2file        = ' '
       swfluxfile         = ' '
       lwfluxfile         = ' '
       swdownfile         = ' '
@@ -652,6 +654,8 @@ C     Start Time.
       vstressStartTime   = UNSET_RL
       uwindStartTime     = UNSET_RL
       vwindStartTime     = UNSET_RL
+      uwind2StartTime    = UNSET_RL
+      vwind2StartTime    = UNSET_RL
       wspeedStartTime    = UNSET_RL
       swfluxStartTime    = UNSET_RL
       lwfluxStartTime    = UNSET_RL
@@ -697,7 +701,7 @@ c     exf_inscal_sss       =  1. _d 0
       exf_inscal_atemp     =  1. _d 0
       exf_offset_atemp     =  0. _d 0
       exf_inscal_aqh       =  1. _d 0
-      exf_offset_aqh       =  1. _d 0
+      exf_offset_aqh       =  0. _d 0
       exf_inscal_hs        =  1. _d 0
       exf_inscal_hl        =  1. _d 0
       exf_inscal_evap      =  1. _d 0
@@ -1095,6 +1099,10 @@ C--   Overwrite tauSaltClimRelax but stop if already set.
 C     Complete the start date specifications for the forcing
 C     fields to get a complete calendar date array.
 C     => moved to EXF_INIT_FIXED
+
+C       PRINT *, uwindfile
+C       PRINT *, uwind2file
+C       FLUSH(6)
 
       _END_MASTER( myThid )
       _BARRIER

@@ -95,7 +95,7 @@
 # 41 years
 # endTime = 1292976000.0,
 # 43 years
- endTime = 1356998400.0,
+ endTime = 1356976800.0,
 # 100 years (36500 days)
 # endTime = 3153600000.0,
  pChkptFreq = 31536000.0,

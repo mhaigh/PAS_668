@@ -83,6 +83,7 @@ C     == Global variables ==
 #include "SIZE.h"
 #include "EEPARAMS.h"
 #include "PARAMS.h"
+#include "EXF_PARAM.h"
 
 C     !INPUT/OUTPUT PARAMETERS:
 C     == Routine arguments ==
@@ -131,6 +132,9 @@ C--   Read configuration parameters for packages
       IF (debugMode) CALL DEBUG_CALL('PACKAGES_READPARMS',myThid)
 #endif
       CALL PACKAGES_READPARMS( myThid )
+C      PRINT *, uwindfile
+C      PRINT *, uwind2file
+C      FLUSH(6)
 
 C--   Set (or reset) parameters (at this point, know which packages are used);
 C     after this call, main model parameters are not supposed to be modified.
@@ -273,12 +277,12 @@ C--   Check parameters and model configuration
       CALL CONFIG_CHECK( myThid )
 
 C--   Write grid data and geometry arrays
-C      IF ( debugLevel.GE.debLevA .OR. startTime.EQ.baseTime ) THEN
+      IF ( debugLevel.GE.debLevA .OR. startTime.EQ.baseTime ) THEN
 #ifdef ALLOW_DEBUG
         IF (debugMode) CALL DEBUG_CALL('WRITE_GRID',myThid)
 #endif
         CALL WRITE_GRID( myThid )
-C      ENDIF
+      ENDIF
 
 #ifdef COMPONENT_MODULE
 C--   Post component-model configuration information to coupler

@@ -190,6 +190,7 @@ C     AREA_PRE  :: hold sea-ice fraction field before any seaice-thermo update
 
 C     wind speed
       _RL UG                  (1:sNx,1:sNy)
+      _RL UG2                 (1:sNx,1:sNy)
 
 C     temporary variables available for the various computations
       _RL tmparr1             (1:sNx,1:sNy)
@@ -204,10 +205,7 @@ C     temporary variables available for the various computations
       _RL a_QbyATMmult_cover  (1:sNx,1:sNy,nITD)
       _RL a_QSWbyATMmult_cover(1:sNx,1:sNy,nITD)
       _RL a_FWbySublimMult    (1:sNx,1:sNy,nITD)
-C     MH
-      _RL F_shfMult           (1:sNx,1:sNy,nITD)
-      _RL F_condMult           (1:sNx,1:sNy,nITD)
-C     --
+      _RL F_sensMult          (1:sNx,1:sNy,nITD)
 #if defined ( ALLOW_SITRACER ) && defined ( SEAICE_GREASE )
       _RL greaseLayerThick    (1:sNx,1:sNy)
       _RL d_HEFFbyGREASE      (1:sNx,1:sNy)
@@ -271,12 +269,11 @@ C                     sublimation to atmosphere, same sign convention
 C                     as EVAP (positive upward)
       _RL a_FWbySublim        (1:sNx,1:sNy)
       _RL r_FWbySublim        (1:sNx,1:sNy)
+C     MH
+      _RL F_sens              (1:sNx,1:sNy)
+C     --
       _RL d_HEFFbySublim      (1:sNx,1:sNy)
       _RL d_HSNWbySublim      (1:sNx,1:sNy)
-C     MH
-      _RL F_shf               (1:sNx,1:sNy)
-      _RL F_cond              (1:sNx,1:sNy)
-C     --
 
 #ifdef SEAICE_CAP_SUBLIM
 C     The latent heat flux which will sublimate all snow and ice
@@ -330,10 +327,8 @@ C     Helper variables for diagnostics
 #endif /* SALT_PLUME_IN_LEADS */
 #endif /* ALLOW_SALT_PLUME */
 
-C     MH
       _RL SIfwmelt    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
       _RL SIfwfrz     (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
-C     --
 
 C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
 
@@ -465,10 +460,6 @@ C =====================
 #ifdef SEAICE_CAP_SUBLIM
           latentHeatFluxMax(i,j)     = 0.0 _d 0
 #endif
-C     MH
-          F_shf(i,j)                 = 0.0 _d 0
-          F_cond(i,j)                = 0.0 _d 0
-C     --
           d_HFRWbyRAIN(i,j)          = 0.0 _d 0
           tmparr1(i,j)               = 0.0 _d 0
 #if defined ( ALLOW_SITRACER ) && defined ( SEAICE_GREASE )
@@ -484,10 +475,6 @@ C     --
 #ifdef SEAICE_CAP_SUBLIM
             latentHeatFluxMaxMult(i,j,IT) = 0.0 _d 0
 #endif
-C     MH
-            F_shfMult(i,j,IT)             = 0.0 _d 0
-            F_condMult(i,j,IT)            = 0.0 _d 0
-C     --
 #ifdef SEAICE_ITD
             d_HEFFbySublim_ITD(i,j,IT)         = 0.0 _d 0
             d_HSNWbySublim_ITD(i,j,IT)         = 0.0 _d 0
@@ -734,7 +721,7 @@ C ================================================================
 C ocean surface/mixed layer temperature
           TmixLoc(i,j) = theta(i,j,kSurface,bi,bj)+celsius2K
 C wind speed from exf
-          UG(i,j) = MAX(SEAICE_EPS,wspeed(i,j,bi,bj))
+          UG(i,j) = MAX(SEAICE_EPS,wspeed2(i,j,bi,bj))
          ENDDO
         ENDDO
 
@@ -758,11 +745,13 @@ C =======================================================================
 C     Compute relative wind speed over sea ice.
          DO j=1,sNy
           DO i=1,sNx
+C     MH changed *wind to *wind2
            SPEED_SQ =
-     &          (uWind(i,j,bi,bj)
+     &          (uWind2(i,j,bi,bj)
      &          -0.5 _d 0*(uice(i,j,bi,bj)+uice(i+1,j,bi,bj)))**2
-     &          +(vWind(i,j,bi,bj)
+     &          +(vWind2(i,j,bi,bj)
      &          -0.5 _d 0*(vice(i,j,bi,bj)+vice(i,j+1,bi,bj)))**2
+c    --
            IF ( SPEED_SQ .LE. SEAICE_EPS_SQ ) THEN
              UG(i,j)=SEAICE_EPS
            ELSE
@@ -838,7 +827,7 @@ CADJ &     comlev1_bibj, key = tkey, byte = isbyte
      O        a_QSWbyATMmult_cover(1,1,IT),
      O        a_FWbySublimMult(1,1,IT),
 C       MH
-     O        F_shfMult(1,1,IT), F_condMult(1,1,IT),
+     O        F_sensMult(1,1,IT),
 C       --
      I        bi, bj, myTime, myIter, myThid )
         ENDDO
@@ -889,10 +878,8 @@ C     (fluxes are per unit (ice surface) area and are thus area weighted)
            a_FWbySublim     (i,j) = a_FWbySublim(i,j)
      &          + a_FWbySublimMult(i,j,IT)*areaFracFactor(i,j,IT)
 C    MH
-           F_shf           (i,j) = F_shf(i,j)
-     &          + F_shfMult(i,j,IT)*areaFracFactor(i,j,IT)
-           F_cond           (i,j) = F_cond(i,j)
-     &          + F_condMult(i,j,IT)*areaFracFactor(i,j,IT)
+           F_sens     (i,j) = F_sens(i,j)
+     &          + F_sensMult(i,j,IT)*areaFracFactor(i,j,IT)
 C    --
 #else
            a_QbyATM_cover   (i,j) = a_QbyATM_cover(i,j)
@@ -902,23 +889,21 @@ C    --
            a_FWbySublim     (i,j) = a_FWbySublim(i,j)
      &          + a_FWbySublimMult(i,j,IT)*SEAICE_PDF(IT)
 C    MH
-           F_shf           (i,j) = F_shf(i,j)
-     &          + F_shfMult(i,j,IT)*SEAICE_PDF(IT)
-           F_cond           (i,j) = F_cond(i,j)
-     &          + F_condMult(i,j,IT)*SEAICE_PDF(IT)
+           F_sens     (i,j) = F_sens(i,j)
+     &          + F_sensMult(i,j,IT)*SEAICE_PDF(IT)
 C    --
 #endif
           ENDDO
          ENDDO
         ENDDO
 
-C #ifdef SEAICE_CAP_SUBLIM
-# ifdef ALLOW_DIAGNOSTICS
+C     MH comment out SEAICE_CAP_SUBLIM if statement
+C      #ifdef SEAICE_CAP_SUBLIM
+#ifdef ALLOW_DIAGNOSTICS
         DO j=1,sNy
          DO i=1,sNx
 C          The actual latent heat flux realized by SOLVE4TEMP
            DIAGarrayA(i,j) = a_FWbySublim(i,j) * lhSublim
-           DIAGarrayB(i,j) = F_cond(i,j)
          ENDDO
         ENDDO
 Cif     The actual vs. maximum latent heat flux
@@ -928,12 +913,13 @@ Cif     The actual vs. maximum latent heat flux
 C     MH
 C          CALL DIAGNOSTICS_FILL(latentHeatFluxMax,
 C     &     'SImaxLHF',0,1,3,bi,bj,myThid)
-          CALL DIAGNOSTICS_FILL(DIAGarrayB,
+          CALL DIAGNOSTICS_FILL(F_sens,
      &     'SIactSHF',0,1,3,bi,bj,myThid)
 C       --
         ENDIF
-# endif /* ALLOW_DIAGNOSTICS */
-C #endif /* SEAICE_CAP_SUBLIM */
+#endif /* ALLOW_DIAGNOSTICS */
+C      #endif /* SEAICE_CAP_SUBLIM */
+C     --
 
 #ifdef ALLOW_AUTODIFF_TAMC
 CADJ STORE AREApreTH       = comlev1_bibj, key = tkey, byte = isbyte
@@ -2522,10 +2508,6 @@ C ===================================================================
      &      tmpscal1,1,'SIdHbATO',0,1,3,bi,bj,myThid)
          CALL DIAGNOSTICS_SCALE_FILL(d_HEFFbyFLOODING,
      &      tmpscal1,1,'SIdHbFLO',0,1,3,bi,bj,myThid)
-C     MH
-         CALL DIAGNOSTICS_SCALE_FILL(d_HEFFbySublim,
-     &      tmpscal1,1,'SIdHbSUB',0,1,3,bi,bj,myThid)
-C     --
          CALL DIAGNOSTICS_SCALE_FILL(d_HSNWbyOCNonSNW,
      &      tmpscal1,1,'SIdSbOCN',0,1,3,bi,bj,myThid)
          CALL DIAGNOSTICS_SCALE_FILL(d_HSNWbyATMonSNW,
@@ -2706,12 +2688,10 @@ C SIatmFW follows the same convention as empmr -- SIatmFW diag does not
         tmpscal1= - 1. _d 0
         CALL DIAGNOSTICS_SCALE_FILL(SIatmFW,
      &        tmpscal1,1,'SIatmFW ',0,1,0,1,1,myThid)
-C     MH
         CALL DIAGNOSTICS_SCALE_FILL(SIfwmelt,
      &        tmpscal1,1,'SIfwmelt',0,1,0,1,1,myThid)
-        CALL DIAGNOSTICS_SCALE_FILL(SIfwfrz,
+         CALL DIAGNOSTICS_SCALE_FILL(SIfwfrz,
      &        tmpscal1,1,'SIfwfrz ',0,1,0,1,1,myThid)
-C     --
       ENDIF
 #endif /* ALLOW_DIAGNOSTICS */
 
