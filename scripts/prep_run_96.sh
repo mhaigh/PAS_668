@@ -3,10 +3,10 @@
 ##
 # DEFINE EXPERIMENT HERE.
 # Experiment options: empty for ALL (EXP=), _fixedWinds, _fixedThermo, _fixedWindsThermo
-EXP=_fixedWindsThermo
+EXP=
 # YEAR1 and YEAR2 should be year-leap year pair (e.g., 1991 & 1992)
-YEAR1=1983
-YEAR2=1984
+YEAR1=1999
+YEAR2=2000
 ##
 
 # Empty the run directory - but first make sure it exists!
