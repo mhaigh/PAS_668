@@ -3,10 +3,10 @@
 ##
 # DEFINE EXPERIMENT HERE.
 # Experiment options: empty for ALL (EXP=), _fixedWinds, _fixedThermo, _fixedWindsThermo
-EXP=
+EXP=_fixedWinds
 # YEAR1 and YEAR2 should be year-leap year pair (e.g., 1991 & 1992)
-YEAR1=1999
-YEAR2=2000
+YEAR1=1991
+YEAR2=1992
 ##
 
 # Empty the run directory - but first make sure it exists!
@@ -30,14 +30,17 @@ else
   cp -f ../input/data.exf${EXP} data.exf
 fi
 
-#aecho 'Using default monthly diagnostics. Comment out if not wanted'
-#cp -f ../input/data.diagnostics_monthly data.diagnostics
+echo 'Using default monthly diagnostics. Comment out if not wanted'
+cp -f ../input/data.diagnostics_monthly data.diagnostics
 
 #echo 'Using seaice-focussed diagnostics. Comment out if not wanted'
 #cp -f ../input/data.diagnostics_seaice data.diagnostics
 
-echo 'Using seaice & theta flux diagnostics. Comment out if not wanted'
-cp -f ../input/data.diagnostics_all data.diagnostics
+#echo 'Using seaice & theta flux diagnostics. Comment out if not wanted'
+#cp -f ../input/data.diagnostics_all data.diagnostics
+
+#echo 'Using default salt diagnostics. Comment out if not wanted'
+#cp -f ../input/data.diagnostics_salt data.diagnostics
 
 #echo 'Using vertical temp-focussed diagnostics. Comment out if not wanted'
 #cp -f ../input/data.diagnostics_temp data.diagnostics
@@ -52,7 +55,7 @@ cp -f ../input/data.diagnostics_all data.diagnostics
 #cp -f ../input/data.diagnostics_daily_snaps data.diagnostics
 
 #echo 'Using exf2wind diagnostics. Comment out if not wanted'
-#cp -f ../input/data.diagnostics_2winds data.diagnostics
+#cp -f ../input/data.diagnostics_exf2winds data.diagnostics
 
 # Deep copy of any pickups (so they don't get overwritten in input/)
 rm -f pickup*

@@ -17,6 +17,7 @@ CODEDIR=../code_68r
 cd $CODEDIR
 rm *.h *.F
 cp defaultCode/* .
+#cp noSeaice/* .
 
 cd ../build
 # Generate a Makefile

@@ -102,10 +102,10 @@ C- MH
      &        ('Rhubard_T',' ',shelficeForcingT,0,myThid)
         CALL WRITE_FLD_XY_RS
      &        ('Rhubard_S',' ',shelficeForcingS,0,myThid)
-C        CALL WRITE_FLD_XY_RS
-C     &        ('Rhubard_FW',' ',shelfIceFreshWaterFlux,0,myThid)
-         CALL WRITE_REC_XY_RL
-     &     ('Rhubard_REC_FW',shelfIceFreshWaterFlux,1,myIter,myThid)
+        CALL WRITE_FLD_XY_RS
+     &        ('Rhubard_FW',' ',shelfIceFreshWaterFlux,0,myThid)
+C         CALL WRITE_REC_XY_RL
+C     &     ('Rhubard_REC_FW',shelfIceFreshWaterFlux,1,myIter,myThid)
 C MH
 
         IF ( SHI_useRealFWflux ) THEN

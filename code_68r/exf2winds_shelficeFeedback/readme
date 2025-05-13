@@ -1,0 +1,5 @@
+What do the edits in this directory do?
+
+Edits to exf subroutines read in extra set of winds, uwind2 and vwind2
+Edits to seaice subroutines have the latent and sensible heat fluxes between sea ice and atmosphere depend on the new winds, uwind2 and vwind2
+Edits to exf_bulkformulae do the same as above, but for open-ocean areas, as these are not recomputed by the seaice package

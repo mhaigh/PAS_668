@@ -1,0 +1,17 @@
+Step by step instructions for setting up and running different perturbation experiments.
+Michael Haigh
+
+========================================================
+==========
+=SHELFICE=
+==========
+
+PURPOSE: model reads in provided binary files for ice shelf freshwater fluxes, salt fluxes and heat fluxes. Model still outputs what it thinks the ice shelf melting should be.
+
+HOW DOES IT WORK: In the_model_main.F edited code reads in shelfIceFreshWaterFlux_cold, shelficeForcingT_cold and shelficeForcingS_cold from binaries. The file names of these binaries is provided in data.
+
+TO PRODUCE THESE BINARIES: run default model outputting SHIfwFlx, SHIforcT and SHIforcS diagnostics, easiest if each in their own state*.data file. Use data.diagnostics_shelficeFilewrite for this purpose. The outputted state* files will be single precision, but we conver them to double precision to be consistent with other binary input files. Use convertBin32to64 block in GRID_TEST.py to do this. This will also undo scalings that were applied to the diagnostics in shelfice_thermodynamics.F. Copy new double-precision binaries back to input directory, making sure to not overwrite any old ones.
+
+
+
+========================================================

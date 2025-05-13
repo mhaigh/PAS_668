@@ -36,23 +36,32 @@ rsync -avzL stdout_* $HOMEHOST:$HOMEDIR
 # rsync -avzL state* $HOMEHOST:$HOMEDIR
 
 # for each diagnostic file, make netcdf and rsync
-#VARS="
-#	state2D
-#	stateExf
-#	stateTheta
-#	stateSalt
-#	stateRho
-#	stateUvel
-#	stateVvel
-#	stateWvel
-#	"
 VARS="
+	state2D
+	stateExf
+	stateTheta
+	stateSalt
+	stateRho
 	stateUvel
 	stateVvel
-	stateExf
-	state2D
-	stateRho
-     "
+	stateWvel
+	"
+#VARS="
+#	stateSalt
+#	stateUvelSlt
+#	stateVvelSlt
+#	stateSHIForcS
+#	stateSflux
+#	stateSurForcS
+#	stateDFxE_SLT
+#	stateDFyE_SLT
+#	"
+#	stateDFrETh
+#	stateADVrTh
+#	stateWvel
+#	stateSalt
+#	stateTheta
+#   	"
 
 for VAR in $VARS
 do

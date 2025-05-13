@@ -670,17 +670,19 @@ C--   compute surface tendencies
 C--   DNG: correction to use cell value for flux rather than BL values
 C--        in order to conserve salt and temp even with real FW Flux
             shelficeForcingT(i,j,bi,bj) =
-     &           ( shiTransCoeffT(i,j,bi,bj)
-     &           - cFac*freshWaterFlux_cold*mass2rUnit
-     &           )*( thetaFreeze - tLoc(I,J) )
-     &           - rFWinBL*freshWaterFlux_cold*mass2rUnit
-     &            *( tLoc(I,J) - theta(I,J,K,bi,bj) )
+     &           shelficeForcingT_cold(i,j,bi,bj)            
+C     &           ( shiTransCoeffT(i,j,bi,bj)
+C     &           - cFac*freshWaterFlux_cold*mass2rUnit
+C     &           )*( thetaFreeze - tLoc(I,J) )
+C     &           - rFWinBL*freshWaterFlux_cold*mass2rUnit
+C     &            *( tLoc(I,J) - theta(I,J,K,bi,bj) )
             shelficeForcingS(i,j,bi,bj) =
-     &           ( shiTransCoeffS(i,j,bi,bj)
-     &           - cFac*freshWaterFlux_cold*mass2rUnit
-     &           )*( saltFreeze - sLoc(I,J) )
-     &           - rFWinBL*freshWaterFlux_cold*mass2rUnit
-     &            *( sLoc(I,J) - salt(I,J,K,bi,bj) )
+     &           shelficeForcingS_cold(i,j,bi,bj)
+C     &           ( shiTransCoeffS(i,j,bi,bj)
+C     &           - cFac*freshWaterFlux_cold*mass2rUnit
+C     &           )*( saltFreeze - sLoc(I,J) )
+C     &           - rFWinBL*freshWaterFlux_cold*mass2rUnit
+C     &            *( sLoc(I,J) - salt(I,J,K,bi,bj) )
            ELSE
             shelfIceHeatFlux      (I,J,bi,bj) = 0. _d 0
             shelfIceFreshWaterFlux(I,J,bi,bj) = 0. _d 0
