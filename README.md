@@ -1,7 +1,7 @@
 This repository contains an MITgcm configuration used for studying the Amundsen Sea, West Antarctica.
 This configuration can be used to produce the model output for the research paper  "Wind-driven coastal polynya variability drives decadal ice-shelf melt variability in the Amundsen Sea" by Michael Haigh, Paul R. Holland and Thomas Caton Harrison (Haigh et al., 2025).
 
-This repository contains three directories, "input", "code_68r" and "scripts". Users must additionally create "run" and "build" directories. Users will require ERA5 data for forcing this MITgcm configuration.
+This repository contains three directories, "input", "code_68r" and "scripts". Users must additionally create "run" and "build" directories. Users will require MITgcm source code (https://github.com/MITgcm/MITgcm) and ERA5 data for forcing this MITgcm configuration.
 
 The directory structure is as follows:
 -input: This contains namelist files.
