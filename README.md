@@ -4,10 +4,15 @@ This configuration can be used to produce the model output for the research pape
 This repository contains three directories, "input", "code_68r" and "scripts". Users must additionally create "run" and "build" directories. Users will require MITgcm source code (https://github.com/MITgcm/MITgcm) and ERA5 data for forcing this MITgcm configuration.
 
 The directory structure is as follows:
+
 -input: This contains namelist files.
+
 -code_68r: This contains edited MITgcm source code files. Edits to the shelfice package and exf (external forcing) package are essential for the pertution experiments in Haigh et al. (2025).
+
 -scripts: users can launch model runs from this directory. Scripts copy into run the necessary source files from input and executables from build. This directoty also contains compile scripts.
+
 -build: Compilation scripts in the scripts directory will build an MITgcm executable in this directory. 
+
 -run: Executables, forcing files, namelists etc. are all to be copied into run for each execution of MITgcm.
 
 Steps for running the model (note users will have to edit all paths for their system):
