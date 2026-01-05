@@ -1,0 +1,18 @@
+1) craype-x86-rome
+2) libfabric/1.12.1.2.2.0.0
+3) craype-network-ofi
+4) perftools-base/23.09.0       
+5) xpmem/0.2.119-1.3_0_gnoinfo  
+6) bolt/0.8                     
+7) epcc-setup-env         
+8) load-epcc-module 
+9) gcc/11.2.0             
+10) craype/2.7.23
+11) cray-dsmml/0.2.2
+12) cray-libsci/23.09.1.1
+13) PrgEnv-gnu/8.4.0
+14) cray-mpich/8.1.27
+15) cray-hdf5-parallel/1.12.2.7
+16) cray-netcdf-hdf5parallel/4.9.0.7
+
+         
